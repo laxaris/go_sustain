@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -172,19 +171,20 @@ class _ProjectsPageState extends State<ProjectsPage> {
                       itemBuilder: (context, index) {
                         if (index == filteredProjects.length) {
                           // Bottom loader indicator
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                         Project project = filteredProjects[index];
 
                         return Column(
                           children: [
                             ProjectCard(
+                              projectID: project.ID,
                               projectName: project.name,
                               imageUrl: project.imageUrl,
                               explanation: project.description,
                               currentMoney: int.parse(project.currentMoney),
                               goalMoney: int.parse(project.goalMoney),
-                              category: project.category,
                             ),
                             SizedBox(
                               height: 25 * h,
@@ -265,14 +265,14 @@ class _MoneyBarState extends State<MoneyBar> {
 }
 
 class ProjectCard extends StatelessWidget {
+  String projectID;
   String imageUrl;
   String projectName;
   String explanation;
   int currentMoney;
   int goalMoney;
-  String category;
   ProjectCard(
-      {required this.category,
+      {required this.projectID,
       required this.currentMoney,
       required this.goalMoney,
       required this.projectName,
@@ -284,83 +284,90 @@ class ProjectCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height / 932;
     double w = MediaQuery.of(context).size.width / 430;
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(20),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/projectPage',
+            arguments: {"projectID": projectID});
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: EdgeInsets.only(
+            top: 10 * h, bottom: 11 * h, left: 24 * w, right: 12 * w),
+        height: 152 * h,
+        width: 430 * w,
+        child: Row(children: [
+          CircleAvatar(
+            radius: 60 * h, // Adjust the radius as needed
+            backgroundImage: NetworkImage(imageUrl),
+          ),
+          SizedBox(width: 17 * w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 257 * w,
+                height: 26 * h,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(projectName,
+                      softWrap: true,
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white,
+                          color: Colors.white,
+                          fontSize: 20 * w,
+                          fontFamily: "google_sans_display")),
+                ),
+              ),
+              SizedBox(height: 6 * h),
+              SizedBox(
+                width: 257 * w,
+                height: 50,
+                child: SingleChildScrollView(
+                  clipBehavior: Clip.hardEdge,
+                  child: Text(explanation,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14 * w,
+                          fontFamily: "google_sans_display")),
+                ),
+              ),
+              MoneyBar(currentMoney: currentMoney, goalMoney: goalMoney),
+              SizedBox(
+                width: 244 * w,
+                child: Row(
+                  children: [
+                    Text(
+                      '\$ $currentMoney',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15 * w,
+                          fontFamily: "google_sans_display"),
+                    ),
+                    const Spacer(),
+                    Text(
+                      ' \$ $goalMoney',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15 * w,
+                          fontFamily: "google_sans_display"),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ]),
       ),
-      padding: EdgeInsets.only(
-          top: 10 * h, bottom: 11 * h, left: 24 * w, right: 12 * w),
-      height: 152 * h,
-      width: 430 * w,
-      child: Row(children: [
-        CircleAvatar(
-          radius: 60 * h, // Adjust the radius as needed
-          backgroundImage: NetworkImage(imageUrl),
-        ),
-        SizedBox(width: 17 * w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 257 * w,
-              height: 26 * h,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Text(projectName,
-                    softWrap: true,
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.white,
-                        color: Colors.white,
-                        fontSize: 20 * w,
-                        fontFamily: "google_sans_display")),
-              ),
-            ),
-            SizedBox(height: 6 * h),
-            SizedBox(
-              width: 257 * w,
-              height: 50,
-              child: SingleChildScrollView(
-                clipBehavior: Clip.hardEdge,
-                child: Text(explanation,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14 * w,
-                        fontFamily: "google_sans_display")),
-              ),
-            ),
-            MoneyBar(currentMoney: currentMoney, goalMoney: goalMoney),
-            SizedBox(
-              width: 244 * w,
-              child: Row(
-                children: [
-                  Text(
-                    '\$ $category $currentMoney',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15 * w,
-                        fontFamily: "google_sans_display"),
-                  ),
-                  const Spacer(),
-                  Text(
-                    ' \$ $goalMoney',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15 * w,
-                        fontFamily: "google_sans_display"),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ]),
     );
   }
 }
 
 class Project {
+  final String ID;
   final String name;
   final String description;
   final String imageUrl;
@@ -369,6 +376,7 @@ class Project {
   final String category;
 
   Project({
+    required this.ID,
     required this.category,
     required this.name,
     required this.description,
@@ -379,7 +387,9 @@ class Project {
 
   factory Project.fromDocument(DocumentSnapshot doc) {
     Map data = doc.data() as Map;
+
     return Project(
+        ID: doc.id,
         name: data['projectName'],
         description: data['explanation'],
         imageUrl: data['imageUrl'],
