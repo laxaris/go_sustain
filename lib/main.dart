@@ -3,8 +3,10 @@ import 'package:go_sustain/pages/login_page.dart';
 import 'package:go_sustain/pages/sign_up_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'pages/create_project.dart';
 import 'pages/home_page.dart';
 import 'pages/profile_page.dart';
+import 'pages/projects_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding
@@ -40,7 +42,9 @@ class MyApp extends StatelessWidget {
           '/signup': (context) => const SignUpPage(),
           '/home': (context) => const HomePage(),
           'onUnknownRoute': (context) => LoginPage(),
-          '/myprofile': (context) => ProfilePage(),
+          '/myprofile': (context) => const ProfilePage(),
+          '/createProject': (context) => const CreateProject(),
+          '/projects': (context) => const ProjectsPage(),
         });
   }
 }

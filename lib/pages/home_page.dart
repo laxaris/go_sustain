@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
                 const HomeButton(route: '/myprofile', text: "My Profile"),
                 SizedBox(height: 34 * h),
                 const HomeButton(
-                  route: '/createproject',
+                  route: '/createProject',
                   text: 'Create Project',
                 ),
                 SizedBox(height: 34 * h),
@@ -70,7 +70,9 @@ class HomeButton extends StatelessWidget {
     final double h = MediaQuery.of(context).size.height / 932;
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Theme.of(context).primaryColor, backgroundColor: Colors.white, minimumSize: Size(336 * w, 68 * h),
+          foregroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Colors.white,
+          minimumSize: Size(336 * w, 68 * h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),

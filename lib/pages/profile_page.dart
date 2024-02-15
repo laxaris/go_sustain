@@ -78,11 +78,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                 } else if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
                                 } else if (!snapshot.hasData) {
-                                  return Text('No data available');
+                                  return const Text('No data available');
                                 } else {
                                   final data = snapshot.data!.data()
                                       as Map<String, dynamic>;
@@ -109,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             fontSize: 24 * w,
                                             fontWeight: FontWeight.w400,
                                             fontFamily: "google_sans_display",
-                                            color: Color.fromRGBO(
+                                            color: const Color.fromRGBO(
                                               0,
                                               0,
                                               0,
@@ -216,13 +216,13 @@ class BubbleText extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10 * w),
-                child: Container(
+                child: SizedBox(
                   height: 43 * h,
                   child: SingleChildScrollView(child: Text(data)),
                 ),
