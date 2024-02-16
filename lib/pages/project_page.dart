@@ -13,9 +13,21 @@ class ProjectPage extends StatefulWidget {
 class _ProjectPageState extends State<ProjectPage> {
   @override
   Widget build(BuildContext context) {
-    double donationAmount = 5;
+    int donationAmount = 5;
+
     double h = MediaQuery.of(context).size.height / 932;
     double w = MediaQuery.of(context).size.width / 430;
+    void _changeDonationAmount(double value) {
+      donationAmount = value.round();
+    }
+
+    void _makeDonate() {
+      Navigator.pushNamed(context, '/payment', arguments: {
+        'projectID': widget.projectID,
+        'donationAmount': donationAmount
+      });
+    }
+
     return FutureBuilder(
         future: FirebaseFirestore.instance
             .collection('projects')
@@ -217,8 +229,8 @@ class _ProjectPageState extends State<ProjectPage> {
                                             child: Column(
                                               children: [
                                                 CustomSlider(
-                                                    donationAmount:
-                                                        donationAmount,
+                                                    changeDonationAmount:
+                                                        _changeDonationAmount,
                                                     goalAmount: double.parse(
                                                         data['goalMoney'])),
                                                 Row(
@@ -268,7 +280,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                                         padding: MaterialStateProperty.all(
                                                             EdgeInsets.symmetric(horizontal: 25 * w))), // Button padding
 
-                                                    onPressed: _publishProject,
+                                                    onPressed: _makeDonate,
                                                     child: Text('Donate', style: TextStyle(color: Colors.white, fontSize: 22 * w, fontWeight: FontWeight.w400, fontFamily: "google_sans_display"))),
                                               ],
                                             ),
@@ -291,21 +303,22 @@ class _ProjectPageState extends State<ProjectPage> {
                   )));
         });
   }
-
-  void _publishProject() {}
 }
 
 class CustomSlider extends StatefulWidget {
-  double donationAmount;
   double goalAmount;
+  final Function(double) changeDonationAmount;
   CustomSlider(
-      {required this.goalAmount, required this.donationAmount, super.key});
+      {required this.changeDonationAmount,
+      required this.goalAmount,
+      super.key});
 
   @override
   State<CustomSlider> createState() => _CustomSliderState();
 }
 
 class _CustomSliderState extends State<CustomSlider> {
+  double donationAmount = 5;
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height / 932;
@@ -325,11 +338,12 @@ class _CustomSliderState extends State<CustomSlider> {
         divisions: ((widget.goalAmount.round() - 5) / 5).round(),
         min: 5,
         max: widget.goalAmount,
-        value: widget.donationAmount,
-        label: widget.donationAmount.round().toString(),
+        value: donationAmount,
+        label: donationAmount.round().toString(),
         onChanged: (value) {
           setState(() {
-            widget.donationAmount = value;
+            donationAmount = value;
+            widget.changeDonationAmount(value);
           });
         },
       ),

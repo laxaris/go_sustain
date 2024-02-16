@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_sustain/pages/login_page.dart';
+import 'package:go_sustain/pages/payment_page.dart';
 import 'package:go_sustain/pages/sign_up_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -53,6 +54,17 @@ class MyApp extends StatelessWidget {
           return MaterialPageRoute(
             builder: (context) {
               return ProjectPage(projectID: args["projectID"]!);
+            },
+          );
+        }
+        if (settings.name == '/payment') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) {
+              return PaymentPage(
+                projectID: args["projectID"]!,
+                donationAmount: args["donationAmount"]!,
+              );
             },
           );
         }
