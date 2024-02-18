@@ -11,6 +11,16 @@ class ProjectPage extends StatefulWidget {
 }
 
 class _ProjectPageState extends State<ProjectPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  void _openDrawer() {
+    _scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  void _closeDrawer() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     int donationAmount = 5;
@@ -49,6 +59,8 @@ class _ProjectPageState extends State<ProjectPage> {
           }
           final data = snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
+              endDrawer: NavDrawer(imageUrl: data['imageUrl']),
+              key: _scaffoldKey,
               backgroundColor: Theme.of(context).primaryColor,
               body: Padding(
                   padding: EdgeInsets.only(top: 40.0 * h, bottom: 24.0 * h),
@@ -85,7 +97,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                     ),
                                   ),
                                   IconButton(
-                                      onPressed: () {},
+                                      onPressed: _openDrawer,
                                       icon: Icon(
                                         Icons.more_horiz,
                                         color: Colors.white,
@@ -428,5 +440,177 @@ class ImageThumbShape extends SliderComponentShape {
         center: center, width: imageWidth * scale, height: imageHeight * scale);
     context.canvas.drawImageRect(
         image, Rect.fromLTWH(0, 0, imageWidth, imageHeight), rect, paint);
+  }
+}
+
+class NavDrawer extends StatelessWidget {
+  String imageUrl;
+
+  NavDrawer({required this.imageUrl, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double h = MediaQuery.of(context).size.height / 932;
+    double w = MediaQuery.of(context).size.width / 430;
+    return Drawer(
+        width: 271 * w,
+        child:
+            ListView(padding: EdgeInsets.only(top: 97 * h), children: <Widget>[
+          Row(
+            children: [
+              SizedBox(
+                width: 68 * w,
+              ),
+              Container(
+                height: 161 * w,
+                width: 161 * w,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                    width: 2 * w,
+                  ),
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage(imageUrl),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 60 * h,
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: 50 * w,
+              ),
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Project Details",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 24 * w,
+                          color: Color.fromRGBO(0, 0, 0, 0.5)),
+                    ),
+                    style: ButtonStyle(
+                      minimumSize:
+                          MaterialStateProperty.all(Size(208 * w, 46 * h)),
+                      maximumSize:
+                          MaterialStateProperty.all(Size(208 * w, 46 * h)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 2 * w),
+                        borderRadius: BorderRadius.circular(30.0),
+                      )),
+                      padding: MaterialStateProperty.all(
+                        EdgeInsets.only(left: 10 * w, right: 10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 28,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/privacy');
+                    },
+                    child: Text(
+                      "Project Team",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 24 * w,
+                          color: Color.fromRGBO(0, 0, 0, 0.5)),
+                    ),
+                    style: ButtonStyle(
+                      alignment: Alignment.centerLeft,
+                      minimumSize:
+                          MaterialStateProperty.all(Size(208 * w, 46 * h)),
+                      maximumSize:
+                          MaterialStateProperty.all(Size(208 * w, 46 * h)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 2 * w),
+                        borderRadius: BorderRadius.circular(30.0),
+                      )),
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(horizontal: 21 * w)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 28 * h,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/security');
+                    },
+                    child: Text(
+                      "Ask question",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 24 * w,
+                          color: Color.fromRGBO(0, 0, 0, 0.5)),
+                    ),
+                    style: ButtonStyle(
+                      alignment: Alignment.centerLeft,
+                      minimumSize:
+                          MaterialStateProperty.all(Size(208 * w, 46 * h)),
+                      maximumSize:
+                          MaterialStateProperty.all(Size(208 * w, 46 * h)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 2 * w),
+                        borderRadius: BorderRadius.circular(30.0),
+                      )),
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(horizontal: 21 * w)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 28,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      "FAQ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 24 * w,
+                          color: Color.fromRGBO(0, 0, 0, 0.5)),
+                    ),
+                    style: ButtonStyle(
+                      alignment: Alignment.centerLeft,
+                      minimumSize:
+                          MaterialStateProperty.all(Size(208 * w, 46 * h)),
+                      maximumSize:
+                          MaterialStateProperty.all(Size(208 * w, 46 * h)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 2 * w),
+                        borderRadius: BorderRadius.circular(30.0),
+                      )),
+                      padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(horizontal: 21 * w)),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 13 * w,
+              ),
+            ],
+          ),
+        ]));
   }
 }

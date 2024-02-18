@@ -3,14 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class OtherProfile extends StatefulWidget {
+  String uId;
+  OtherProfile({required this.uId, super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<OtherProfile> createState() => _OtherProfileState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _OtherProfileState extends State<OtherProfile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   void _openDrawer() {
@@ -28,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .doc(widget.uId)
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -66,17 +67,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 53 * w,
+                                      width: 80 * w,
                                     ),
                                     Text(
-                                      'My Profile',
+                                      'Profile',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 36 * w,
                                           fontFamily: "google_sans_display"),
                                     ),
                                     SizedBox(
-                                      width: 53 * w,
+                                      width: 80 * w,
                                     ),
                                     IconButton(
                                         onPressed: _openDrawer,
@@ -297,6 +298,7 @@ class NavDrawer extends StatelessWidget {
                           color: Color.fromRGBO(0, 0, 0, 0.5)),
                     ),
                     style: ButtonStyle(
+                      alignment: Alignment.centerLeft,
                       minimumSize:
                           MaterialStateProperty.all(Size(208 * w, 46 * h)),
                       maximumSize:
@@ -383,7 +385,7 @@ class NavDrawer extends StatelessWidget {
                       "Share this account",
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontSize: 24 * w,
+                          fontSize: 20 * w,
                           color: Color.fromRGBO(0, 0, 0, 0.5)),
                     ),
                     style: ButtonStyle(
@@ -400,7 +402,7 @@ class NavDrawer extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30.0),
                       )),
                       padding: MaterialStateProperty.all(
-                          EdgeInsets.symmetric(horizontal: 21 * w)),
+                          EdgeInsets.only(left: 21 * w)),
                     ),
                   ),
                 ],

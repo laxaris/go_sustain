@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_sustain/pages/login_page.dart';
+import 'package:go_sustain/pages/others_profile_page.dart';
 import 'package:go_sustain/pages/payment_page.dart';
 import 'package:go_sustain/pages/sign_up_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'pages/create_project.dart';
 import 'pages/home_page.dart';
+import 'pages/leadership.dart';
 import 'pages/privacy_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/project_page.dart';
@@ -51,6 +53,7 @@ class MyApp extends StatelessWidget {
         '/projects': (context) => const ProjectsPage(),
         '/security': (context) => const SecurityPage(),
         '/privacy': (context) => const PrivacyPage(),
+        '/leadership': (context) => const LeadershipPage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/projectPage') {
@@ -68,6 +71,16 @@ class MyApp extends StatelessWidget {
               return PaymentPage(
                 projectID: args["projectID"]!,
                 donationAmount: args["donationAmount"]!,
+              );
+            },
+          );
+        }
+        if (settings.name == "/othersProfile") {
+          final args = settings.arguments as Map<String, String>;
+          return MaterialPageRoute(
+            builder: (context) {
+              return OtherProfile(
+                uId: args["uId"]!,
               );
             },
           );

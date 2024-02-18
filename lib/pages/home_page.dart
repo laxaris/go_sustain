@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 34 * h),
                 const HomeButton(
-                  route: '/leaderboard',
+                  route: '/leadership',
                   text: 'Leadership',
                 ),
               ],

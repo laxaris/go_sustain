@@ -57,40 +57,35 @@ class PrivacyPage extends StatelessWidget {
                                 SizedBox(
                                   height: 87 * h,
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {},
+                                Container(
                                   child: Row(
                                     children: [
+                                      SizedBox(
+                                        width: 28 * w,
+                                      ),
                                       Text(
                                         "Secret Account",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w400,
                                             fontSize: 24 * w,
                                             color:
                                                 Color.fromRGBO(0, 0, 0, 0.5)),
                                       ),
+                                      Spacer(),
+                                      ToggleButton(),
+                                      SizedBox(
+                                        width: 28 * w,
+                                      ),
                                     ],
                                   ),
-                                  style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(0),
-                                    alignment: Alignment.centerLeft,
-                                    minimumSize: MaterialStateProperty.all(
-                                        Size(388 * w, 67 * h)),
-                                    maximumSize: MaterialStateProperty.all(
-                                        Size(388 * w, 67 * h)),
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: Theme.of(context).primaryColor,
-                                          width: 2 * w),
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    )),
-                                    padding: MaterialStateProperty.all(
-                                        EdgeInsets.symmetric(
-                                            horizontal: 31 * w)),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    border: Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 2 * w,
+                                    ),
                                   ),
+                                  height: 67 * h,
+                                  width: 388 * w,
                                 ),
                                 SizedBox(
                                   height: 10 * h,
@@ -174,5 +169,33 @@ class PrivacyPage extends StatelessWidget {
                     ]),
               ),
             )));
+  }
+}
+
+class ToggleButton extends StatefulWidget {
+  @override
+  _ToggleButtonState createState() => _ToggleButtonState();
+}
+
+class _ToggleButtonState extends State<ToggleButton> {
+  bool isSwitched = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.scale(
+      scale: 1.5, // Increase the size of the switch
+      child: Switch(
+        value: isSwitched,
+        onChanged: (value) {
+          setState(() {
+            isSwitched = value;
+          });
+        },
+        activeTrackColor: Theme.of(context).primaryColor,
+        activeColor: Colors.green,
+        inactiveThumbColor: Colors.white,
+        inactiveTrackColor: Colors.grey,
+      ),
+    );
   }
 }
