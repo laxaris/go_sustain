@@ -6,9 +6,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'pages/create_project.dart';
 import 'pages/home_page.dart';
+import 'pages/privacy_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/project_page.dart';
 import 'pages/projects_page.dart';
+import 'pages/security_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding
@@ -47,6 +49,8 @@ class MyApp extends StatelessWidget {
         '/myprofile': (context) => const ProfilePage(),
         '/createProject': (context) => const CreateProject(),
         '/projects': (context) => const ProjectsPage(),
+        '/security': (context) => const SecurityPage(),
+        '/privacy': (context) => const PrivacyPage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/projectPage') {

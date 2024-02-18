@@ -70,8 +70,11 @@ class _ProjectsPageState extends State<ProjectsPage> {
       _lastDocument = snapshot.docs.last;
     }
 
+    var projects = await Future.wait(
+        snapshot.docs.map((doc) => Project.fromDocument(doc)));
+
     setState(() {
-      _projects.addAll(snapshot.docs.map((doc) => Project.fromDocument(doc)));
+      _projects.addAll(projects);
       _isLoading = false;
     });
   }
@@ -179,6 +182,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                         return Column(
                           children: [
                             ProjectCard(
+                              ownerGender: (project.ownerGender == "Female"),
                               projectID: project.ID,
                               projectName: project.name,
                               imageUrl: project.imageUrl,
@@ -271,8 +275,10 @@ class ProjectCard extends StatelessWidget {
   String explanation;
   int currentMoney;
   int goalMoney;
+  bool ownerGender;
   ProjectCard(
-      {required this.projectID,
+      {required this.ownerGender,
+      required this.projectID,
       required this.currentMoney,
       required this.goalMoney,
       required this.projectName,
@@ -291,7 +297,7 @@ class ProjectCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: ownerGender ? Colors.purple : Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(20),
         ),
         padding: EdgeInsets.only(
@@ -367,6 +373,7 @@ class ProjectCard extends StatelessWidget {
 }
 
 class Project {
+  final String ownerGender;
   final String ID;
   final String name;
   final String description;
@@ -376,6 +383,7 @@ class Project {
   final String category;
 
   Project({
+    required this.ownerGender,
     required this.ID,
     required this.category,
     required this.name,
@@ -385,10 +393,19 @@ class Project {
     required this.goalMoney,
   });
 
-  factory Project.fromDocument(DocumentSnapshot doc) {
+  static Future<Project> fromDocument(DocumentSnapshot doc) async {
     Map data = doc.data() as Map;
+    String ownerGender = '';
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    DocumentReference userData =
+        firestore.collection('users').doc(data['owner']);
+
+    DocumentSnapshot value = await userData.get();
+    ownerGender = (value.data() as Map<String, dynamic>)['gender'];
 
     return Project(
+        ownerGender: ownerGender,
         ID: doc.id,
         name: data['projectName'],
         description: data['explanation'],
