@@ -50,17 +50,17 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBBsyxT_SwDSw-xNb_Iybdlp471HVkLBzs',
-    appId: '1:699984675792:android:8e4be7e833d575607fefd5',
-    messagingSenderId: '699984675792',
+    apiKey: '' // need to be implemented by user,
+    appId: '' // need to be implemented by user,
+    messagingSenderId: '' // need to be implemented by user,
     projectId: 'go-sustain',
     storageBucket: 'go-sustain.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDPBKJrb6bZYlCEi52wrcLh1I_cpyo5yZs',
-    appId: '1:699984675792:ios:9f1f233150b30cbf7fefd5',
-    messagingSenderId: '699984675792',
+    apiKey: '' // need to be implemented by user,
+    appId: '' // need to be implemented by user,
+    messagingSenderId: '' // need to be implemented by user,
     projectId: 'go-sustain',
     storageBucket: 'go-sustain.appspot.com',
     iosBundleId: 'com.example.goSustain',
